@@ -13,7 +13,7 @@ public class NNBackpropagation
 	double initialWeightValue = 0.5;
 	double bias = 0.5;
 	bool   useBias = false;
-	double learingFactor = 1;
+	double learingFactor = 200;
 	
 	double activation (double x)
 	{
@@ -32,11 +32,18 @@ public class NNBackpropagation
 	{
 		weights = new List<List<List<double>>> ();
 		genLayers (layerDimensions);
-		genWeights (layerDimensions);
+		genWeights (layerDimensions);		
+		
 		
 		Debug.Log ("Using bias: " + useBias);
 		Debug.Log ("initialWeightValue: " + initialWeightValue);
 		Debug.Log ("bias: " + bias);
+		
+		
+		Debug.Log ("nets: " + showList (nets));	
+		Debug.Log ("layers: " + showList (layers));	
+		Debug.Log ("errors: " + showList (errors));	
+		Debug.Log ("weights: " + showList (weights));	
 	}
 	
 	double biasFunction (double x)
@@ -136,6 +143,7 @@ public class NNBackpropagation
 		// errors[0] = new List<double>(layers[0]);
 		
 		
+		Debug.Log ("weights: " + showList (weights));	
 		// über weights
 		for (int w = 0; w < weights.Count; w++) {
 			// neuronlayer n
@@ -150,7 +158,7 @@ public class NNBackpropagation
 				}
 			}
 		}
-		Debug.Log ("weights: " + showList (weights));		
+		Debug.Log ("weights: \n" + showList (weights));		
 	}
 
 	void genWeights (int[] layerDimensions)
@@ -187,8 +195,24 @@ public class NNBackpropagation
 			}			
 			layers.Add (tmp);
 		}
-		nets = new List<List<double>> (layers);
-		errors = new List<List<double>> (layers);
+		
+		nets = new List<List<double>> ();
+		for (int i = 0; i < layerDimensions.Length; i++) {
+			List<double> tmp = new List<double> ();			
+			for (int j = 0; j < layerDimensions[i]; j++) {
+				tmp.Add (0);
+			}			
+			nets.Add (tmp);
+		}
+		
+		errors = new List<List<double>> ();
+		for (int i = 0; i < layerDimensions.Length; i++) {
+			List<double> tmp = new List<double> ();			
+			for (int j = 0; j < layerDimensions[i]; j++) {
+				tmp.Add (0);
+			}			
+			errors.Add (tmp);
+		}
 	}
 	
 	string showList (List<double> tmp)
@@ -199,7 +223,7 @@ public class NNBackpropagation
 			builder.Append (safePrime).Append (", ");
 		}
 		string result = builder.ToString ();
-		result = "[" + result.Substring (0, result.Length - 2) + "]";
+		result = "\n\t\t[" + result.Substring (0, result.Length - 2) + "]";
 		//Debug.Log(result);
 		return result;
 	}
@@ -212,7 +236,7 @@ public class NNBackpropagation
 			builder.Append (showList (safePrime)).Append (", ");
 		}
 		string result = builder.ToString ();
-		result = "[" + result.Substring (0, result.Length - 2) + "]";
+		result = "\t[" + result.Substring (0, result.Length - 2) + "\n\t]";
 		return result;
 	}
 
@@ -221,10 +245,10 @@ public class NNBackpropagation
 		StringBuilder builder = new StringBuilder ();
 		foreach (List<List<double>> safePrime in tmp) {
 			// Append each int to the StringBuilder overload.
-			builder.Append (showList (safePrime)).Append (", ");
+			builder.Append (showList (safePrime)).Append (", \n");
 		}
 		string result = builder.ToString ();
-		result = "[" + result.Substring (0, result.Length - 2) + "]";
+		result = "[\n" + result.Substring (0, result.Length - 3) + "\n]";
 		//  Debug.Log (result);
 		return result;
 	}
