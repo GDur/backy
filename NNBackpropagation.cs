@@ -10,21 +10,24 @@ public class NNBackpropagation
 	List<List<double>> nets;
 	List<List<double>> errors;
 	List<List<List<double>>> weights;
-	double initialWeightValue = 0.5;
+	double initialWeightValue = 0.6;
 	double bias = 0.5;
-	bool   useBias = false;
-	double learingFactor = 200;
+	bool   useBias = false; // NICHT BENUTZT IM MOMENT keine auswirkung!!!
+	double learingFactor = 50.3;
 	
-	double activation (double x)
+	double activation (double y)
 	{
-		x = 1 / (1 + Math.Pow (Math.E, (-1 * x)));
-		return biasFunction (x);
+		double x = 1 / (1 + Math.Pow (Math.E, (-1 * y)));
+		// double x = Math.Tanh(y );
+		return x;
 	}
 
-	double derivative (double x)
+	double derivative (double y)
 	{
-		x = activation (x);
+		double x = 1 / (1 + Math.Pow (Math.E, (-1 * y)));
 		x = x * (1 - x);
+		
+		// double x = 1 - (Math.Tanh(y) * Math.Tanh(y));
 		return x;
 	}
 	
@@ -63,6 +66,15 @@ public class NNBackpropagation
 		}
 	}
 	
+	public void showStats ()
+	{
+		Debug.Log ("showStats...");
+		Debug.Log ("nets: " + showList (nets));	
+		Debug.Log ("layers: " + showList (layers));			
+		Debug.Log ("errors: " + showList (errors));		
+		Debug.Log ("weights: " + showList (weights));		
+	}
+	
 	double networth (int layersAndWeightsIndex, int weightsRow)
 	{
 		//assert(input.Count == weigthsRow.Count);
@@ -91,8 +103,11 @@ public class NNBackpropagation
 	}
 	
 	public List<double> use (double[] inputs)
-	{		
-		layers [0] = new List<double> (inputs); // trick for generalliseziza0riati0rn
+	{
+		for (int i = 0; i < inputs.Length; i++) {		
+			layers [0][i] = inputs[i];
+		}
+		
 		
 		for (int i = 1; i < layers.Count; i++) {
 			for (int j = 0; j < layers[i].Count; j++) {
@@ -109,11 +124,13 @@ public class NNBackpropagation
 		assert (inputs.Length == layers [0].Count, "Train() inputlenght != layers[0]count");
 		assert (expected.Length == layers [lastIndex ()].Count, "Train() expected.Length != layers[lastIndex()].Count");
 		
-		Debug.Log ("Train...");
+		//Debug.Log ("Train...");
 		
 		// calculate outputvalues
 		
-		layers [0] = new List<double> (inputs); // trick for generalliseziza0riati0rn
+		for (int i = 0; i < inputs.Length; i++) {		
+			layers [0][i] = inputs[i];
+		}
 		
 		for (int i = 1; i < layers.Count; i++) {
 			for (int j = 0; j < layers[i].Count; j++) {
@@ -122,13 +139,14 @@ public class NNBackpropagation
 				layers [i] [j] = activation (tmpNet);
 			}
 		}
-		Debug.Log ("nets: " + showList (nets));	
-		Debug.Log ("layers: " + showList (layers));	
+		//Debug.Log ("nets: " + showList (nets));	
+		//Debug.Log ("layers: " + showList (layers));	
 		// calculate errorsvalues (backwards)
 		
 		// trick for generalliseziza0riati0rn
 		for (int j = 0; j < layers[lastIndex()].Count; j++) {
 			errors [lastIndex ()] [j] = expected [j] - layers [lastIndex ()] [j];
+			Debug.Log (errors [lastIndex ()] [j] + " = " + expected[j] + " - " + layers [lastIndex ()] [j]);
 		}
 		
 		// set deltavalues
@@ -137,13 +155,13 @@ public class NNBackpropagation
 				errors [i - 1] [j] = errorworth (i, j);
 			}
 		}
-		Debug.Log ("errors: " + showList (errors));	
+		//Debug.Log ("errors: " + showList (errors));	
 		// REMEMBER THE FIRST LAYER CONTAINS INPUT VALUES
 		
 		// errors[0] = new List<double>(layers[0]);
 		
 		
-		Debug.Log ("weights: " + showList (weights));	
+		//Debug.Log ("weights: " + showList (weights));	
 		// über weights
 		for (int w = 0; w < weights.Count; w++) {
 			// neuronlayer n
@@ -153,12 +171,13 @@ public class NNBackpropagation
 				
 				for (int n_p_1 = 0; n_p_1 < layers[w + 1].Count; n_p_1++) {
 					//Debug.Log (w + " " + n + " " + n_p_1);
+					//Debug.Log (weights [w] [n_p_1] [n] + " + " + learingFactor + " * " + errors [w + 1] [n_p_1] + " * " + derivative (nets [w + 1] [n_p_1]) + " * " + tmpInput);
 					
 					weights [w] [n_p_1] [n] = weights [w] [n_p_1] [n] + learingFactor * errors [w + 1] [n_p_1] * derivative (nets [w + 1] [n_p_1]) * tmpInput;
 				}
 			}
 		}
-		Debug.Log ("weights: \n" + showList (weights));		
+		//Debug.Log ("weights: \n" + showList (weights));		
 	}
 
 	void genWeights (int[] layerDimensions)
@@ -248,7 +267,7 @@ public class NNBackpropagation
 			builder.Append (showList (safePrime)).Append (", \n");
 		}
 		string result = builder.ToString ();
-		result = "[\n" + result.Substring (0, result.Length - 3) + "\n]";
+		result = "\n[\n" + result.Substring (0, result.Length - 3) + "\n]";
 		//  Debug.Log (result);
 		return result;
 	}
