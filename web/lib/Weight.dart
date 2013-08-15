@@ -14,12 +14,6 @@ class Weight {
       }
       weights.add(tmp);
     }
-    if(neuron.useXOR){
-      if(i == 0)
-        weights = [[-1.1431, -3.80070], [3.791287, 1.391485]];
-      if(i == 1)
-        weights = [[-2.665579, -3.874355]];
-    }
   }
 
   adjustWeights(List<num> errors,  List<num> outputs, List<num> outputsNext){

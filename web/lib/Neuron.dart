@@ -1,45 +1,41 @@
 part of backy;
 
-class Neuron {
+
+class SigmoidNeuron implements Neuron {
   num learningRate = 0.5;
   num bias = 5;
-  bool useXOR = !true;
-  bool useTanh = true;
 
-  Neuron() {
-    print("Neuron is using: \nlearningRate: $learningRate\nbias: $bias\nuseTanh: $useTanh");
-    //print("tanh(100) (0) (-100): " + tanh(100).toString() + "," + tanh(0).toString() + "," +  tanh(-100).toString());
-    //print("sig(100) (0) (-100): " + sig(100).toString() + "," + sig(0).toString() + "," +  sig(-100).toString());
-  }
+  SigmoidNeuron() {print(this); }
 
-  num initialWeights() {
-    var random = new Math.Random();
-    if(useTanh)
-      return 1 - (random.nextDouble() * 2);
-    return random.nextDouble();
-  }
+  num initialWeights() => new Math.Random().nextDouble();
 
-  num activation(num x) {
-    if(useTanh)
-      return tanh(x - bias);
-    return sig(x - bias);
-  }
+  num activation(num x) => sig(x - bias);
 
-  num derivative(num x){
-    if(useTanh)
-      return 1 - tanh(x) * tanh(x);
-    return x * (1 - x);
-  }
+  num derivative(num x) => x * (1 - x);
 
-  String toString(){
-    return "test: " + activation.toString();
-  }
+  num sig(num x) =>  1 / (1 + Math.pow(Math.E, (-1 * x)));
+}
 
-  num sig(num x){
-    return 1 / (1 + Math.pow(Math.E, (-1 * x)));
-  }
+class TanHNeuron implements Neuron {
+  num learningRate = 0.5;
+  num bias = 5;
 
-  num tanh(num x){
-    return -1 + 2 / (1 + Math.pow(Math.E,(-2 * x)));
-  }
+  TanHNeuron() {print(this); }
+
+  num initialWeights() => 1 - (new Math.Random().nextDouble() * 2);
+
+  num activation(num x) => tanh(x - bias);
+
+  num derivative(num x) => 1 - tanh(x) * tanh(x);
+
+  num tanh(num x) => -1 + 2 / (1 + Math.pow(Math.E,(-2 * x)));
+}
+
+abstract class Neuron {
+  num learningRate;
+  num bias;
+
+  num initialWeights();
+  num activation(num x);
+  num derivative(num x);
 }

@@ -2,10 +2,10 @@ part of backy;
 
 void main() {
 
-  var neuron = new Neuron();
+  var neuron = new TanHNeuron();
 
   var fran = new Backy([2, 2, 1], neuron);
-  if(neuron.useTanh){
+  if(neuron is TanHNeuron){
 
     for(num i = 0; i < 1000; i++){
       fran.train([-1,-1], [-1]);
