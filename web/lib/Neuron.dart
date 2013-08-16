@@ -1,6 +1,5 @@
 part of backy;
 
-
 class SigmoidNeuron implements Neuron {
   num learningRate = 0.5;
   num bias = 5;

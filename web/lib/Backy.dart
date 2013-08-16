@@ -10,14 +10,13 @@ class Backy {
   List<num> netDimensions;
 
   Backy(this.netDimensions, this.neuron) {
-
     inputLength = netDimensions[0];
     outputLength = netDimensions[netDimensions.length - 1];
     createLayers();
     createWeights();
   }
 
-  train(List<num> input, List<num> expected) {
+  trainOnline(List<num> input, List<num> expected) {
     assert(input.length == inputLength);
     assert(expected.length == outputLength);
 
@@ -73,20 +72,5 @@ class Backy {
     }
 
     return layers.last.outputs;
-  }
-
-  imagine(List<num> input) {
-    // doesnt work
-    assert(input.length == outputLength);
-
-    // calculate net and outputvalues
-    layers.last.outputs = input;
-
-    for(num i = weights.length; i > 0; i--) {
-      layers[i - 1].errors = weights[i - 1].mackpropagateError(layers[i].outputs, layers[i - 1].outputs);
-      layers[i - 1].setOutputs();
-    }
-
-    return layers[0].outputs;
   }
 }

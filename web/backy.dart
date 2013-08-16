@@ -5,7 +5,8 @@ import 'dart:math' as Math;
 part 'lib/Backy.dart';
 part 'lib/Layer.dart';
 part 'lib/Weight.dart';
-
 part 'lib/Neuron.dart';
+
+part 'lib/Trainer.dart';
 
 part 'main.dart';
