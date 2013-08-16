@@ -2,7 +2,7 @@ name: backy
 version: 0.1.0
 author: GDur<gdur.mugen@googlemail.com>
 description: "Backy is a neural network which is using the backpropagation algorithm.\r\
-  \nI can be instanciated with any number of layer diemnsions. For example: [2, 3,\
+  \nIt can be instanciated with any number of layer diemnsions. For example: [2, 3,\
   \ 1] which produces a net with 3 layers. The input layer has two inputs and the\
   \ output layer has 1 output neuron. The hidden layer has 3 neurons."
 homepage: http://pub.dartlang.org/
