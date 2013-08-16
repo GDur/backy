@@ -1,4 +1,12 @@
-part of backy;
+library backy;
+
+import 'dart:math' as Math;
+
+part 'layer.dart';
+part 'weight.dart';
+part 'neuron.dart';
+
+part 'trainer.dart';
 
 class Backy {
   List<Layer> layers  = new List<Layer>();
@@ -41,6 +49,19 @@ class Backy {
     }
   }
 
+  use(List<num> input) {
+    assert(input.length == inputLength);
+
+    // calculate net and outputvalues
+    layers[0].outputs = input;
+    for(num i = 0; i < weights.length; i++) {
+      layers[i + 1].nets = weights[i].multiply(layers[i].outputs, false);
+      layers[i + 1].setOutputs() ;
+    }
+
+    return layers.last.outputs;
+  }
+
   String toString() {
     String tmp = "[";
     for(num i = 0; i < weights.length; i++) {
@@ -59,18 +80,5 @@ class Backy {
     for(num i = 0; i < netDimensions.length - 1; i++){
       weights.add(new Weight(netDimensions[i], netDimensions[i + 1], neuron, i));
     }
-  }
-
-  use(List<num> input) {
-    assert(input.length == inputLength);
-
-    // calculate net and outputvalues
-    layers[0].outputs = input;
-    for(num i = 0; i < weights.length; i++) {
-      layers[i + 1].nets = weights[i].multiply(layers[i].outputs, false);
-      layers[i + 1].setOutputs() ;
-    }
-
-    return layers.last.outputs;
   }
 }

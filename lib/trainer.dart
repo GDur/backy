@@ -3,7 +3,7 @@ part of backy;
 class Trainer{
   var trainingSets = new List<List<List<num>>>();
   Backy backy;
-  num precision = .1;
+  num precision = 0; // maybe unsolvable
   Trainer(this.backy){
     assert(aboutTheSame(2, 1.9, .1));
     assert(aboutTheSame(2, 2.1, .1));
@@ -19,11 +19,13 @@ class Trainer{
     trainingSets.add([input, expected]);
   }
 
-  trainOnlineSets(num maximumReapeatingCycle, precision) {
-    trainNewOnlineSets(this.trainingSets, maximumReapeatingCycle);
+  trainOnlineSets(num maximumReapeatingCycle, num precision) {
+    trainNewOnlineSets(this.trainingSets, maximumReapeatingCycle, precision);
   }
 
-  trainNewOnlineSets(List<List<List<num>>> trainingSets, num maximumReapeatingCycle) {
+  trainNewOnlineSets(List<List<List<num>>> trainingSets, num maximumReapeatingCycle, num precision) {
+    this.precision = precision;
+
     bool SuccessfullyTrained = true;
     for(num i = 0; i < maximumReapeatingCycle; i++){
       SuccessfullyTrained = true;
@@ -36,14 +38,14 @@ class Trainer{
           if(!aboutTheSame(results[r], set[1][r], precision))
             SuccessfullyTrained = false;
       }
-      if(SuccessfullyTrained){
-        print("Successfully Trained! Accuracity: $precision, Trainingsteps: $i");
+      if(SuccessfullyTrained) {
+        print("Successfully Trained! Accuracity: $precision, Trainingsteps: $i\n" + this.toString());
         break;
       }
     }
 
     if(!SuccessfullyTrained)
-      print("Unsuccessfull Training! Accuracity: $precision, Trainingsteps: $maximumReapeatingCycle");
+      print("Unsuccessfull Training! Accuracity: $precision, Trainingsteps: $maximumReapeatingCycle\n" + this.toString());
   }
 
   bool aboutTheSame(num a, num b, num precision){
@@ -52,5 +54,5 @@ class Trainer{
     return false;
   }
 
-  String toString() => ".trainNewOnlineSets(" + trainingSets.toString() + ", 100);";
+  String toString() => ".trainNewOnlineSets(" + trainingSets.toString() + ", 1000);";
 }
