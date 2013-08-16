@@ -4,6 +4,7 @@ class Trainer{
   var trainingSets = new List<List<List<num>>>();
   Backy backy;
   num precision = 0; // maybe unsolvable
+
   Trainer(this.backy){
     assert(aboutTheSame(2, 1.9, .1));
     assert(aboutTheSame(2, 2.1, .1));
@@ -16,14 +17,24 @@ class Trainer{
     assert(input.length == backy.inputLength);
     assert(expected.length == backy.outputLength);
 
-    trainingSets.add([input, expected]);
+    // to make sure that it's not the reference of the list which is inserted
+    List<num> tmp = new List<num>();
+    for(num i = 0; i < input.length; i++){
+      tmp.add(input[i]);
+    }
+    List<num> tmp2 = new List<num>();
+    for(num i = 0; i < expected.length; i++){
+      tmp2.add(expected[i]);
+    }
+
+    trainingSets.add([tmp, tmp2]);
   }
 
   trainOnlineSets(num maximumReapeatingCycle, num precision) {
-    trainNewOnlineSets(this.trainingSets, maximumReapeatingCycle, precision);
+    trainNewOnlineSets(maximumReapeatingCycle, precision, this.trainingSets);
   }
 
-  trainNewOnlineSets(List<List<List<num>>> trainingSets, num maximumReapeatingCycle, num precision) {
+  trainNewOnlineSets(num maximumReapeatingCycle, num precision, List<List<List<num>>> trainingSets) {
     this.precision = precision;
 
     bool SuccessfullyTrained = true;
@@ -54,5 +65,5 @@ class Trainer{
     return false;
   }
 
-  String toString() => ".trainNewOnlineSets(" + trainingSets.toString() + ", 1000);";
+  String toString() => ".trainNewOnlineSets(1000, .1," + trainingSets.toString() + ");";
 }
