@@ -31,16 +31,16 @@ class Backy {
     // calculate net and outputvalues
     layers[0].outputs = input;
 
-    for(num i = 0; i < weights.length; i++) {
-      layers[i + 1].nets = weights[i].multiply(layers[i].outputs, false);
-      layers[i + 1].setOutputs();
+    for(num i = 1; i < layers.length; i++) {
+      layers[i].nets = weights[i - 1].multiply(layers[i - 1].outputs, false);
+      layers[i].setOutputs();
     }
 
     // calculate errors
     layers.last.calcLastErrors(expected);
 
-    for(num i = weights.length; i > 1; i--) {
-      layers[i - 1].errors = weights[i - 1].mackpropagateError(layers[i].errors, layers[i - 1].outputs);
+    for(num i = layers.length - 1; i > 1; i--) {
+      layers[i - 1].calcErrors(weights[i - 1], layers[i].errors);
     }
 
     // backpropagate
@@ -54,9 +54,9 @@ class Backy {
 
     // calculate net and outputvalues
     layers[0].outputs = input;
-    for(num i = 0; i < weights.length; i++) {
-      layers[i + 1].nets = weights[i].multiply(layers[i].outputs, false);
-      layers[i + 1].setOutputs() ;
+    for(num i = 1; i < layers.length; i++) {
+      layers[i].nets = weights[i - 1].multiply(layers[i - 1].outputs, false);
+      layers[i].setOutputs();
     }
 
     return layers.last.outputs;

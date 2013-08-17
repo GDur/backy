@@ -6,7 +6,6 @@ class Weight {
   Neuron neuron;
 
   Weight(this.width, this.height, this.neuron, num i) {
-
     for(num i = 0; i < height; i++) {
       var tmp = new List<num>();
       for(num j = 0; j < width; j++) {
@@ -57,25 +56,6 @@ class Weight {
       }
 
     }
-    return results;
-  }
-
-  List<num> mackpropagateError(List<num> errors, List<num> outputs) {
-    // input.lenghth muss entweder gleich der höhe oder weite sein
-    assert(width == errors.length || height == errors.length);
-
-    // die output länge ist immer die diemnsion die nciht gleich des inpuzt layers ist
-    List<num> results = new List<num>(width);
-
-    for(num w = 0; w < width; w++){
-      num error = .0;
-
-      for(num h = 0; h < height; h++){
-        error += errors[h] * weights[h][w];
-      }
-      results[w] = neuron.derivative(outputs[w]) * error;
-    }
-
     return results;
   }
 

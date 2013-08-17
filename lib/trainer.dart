@@ -65,5 +65,5 @@ class Trainer{
     return false;
   }
 
-  String toString() => ".trainNewOnlineSets(1000, .1," + trainingSets.toString() + ");";
+  String toString() => ".trainNewOnlineSets(1000, .1, " + trainingSets.toString() + ");";
 }

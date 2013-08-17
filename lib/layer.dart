@@ -14,9 +14,27 @@ class Layer {
     }
   }
 
+  num finalStep(num index, num error) => neuron.derivative(outputs[index]) * error;
+
   calcLastErrors(List<num> expected){
     for(num i = 0; i < errors.length; i++) {
-      errors[i] = neuron.derivative(outputs[i]) * (expected[i] - outputs[i]);
+      errors[i] = finalStep( i, (expected[i] - outputs[i]));
+    }
+  }
+
+  calcErrors(Weight weight, List<num> previousErrors) {
+    // input.lenghth muss entweder gleich der höhe oder weite sein
+    assert(weight.width == previousErrors.length || weight.height == previousErrors.length);
+
+    // die output länge ist immer die diemnsion die nciht gleich des inpuzt layers ist
+
+    for(num w = 0; w < weight.width; w++){
+      num error = .0;
+
+      for(num h = 0; h < weight.height; h++){
+        error += previousErrors[h] * weight.weights[h][w];
+      }
+      errors[w] = finalStep( w, error);
     }
   }
 
