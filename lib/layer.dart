@@ -5,6 +5,7 @@ class Layer {
   List<num> outputs = new List<num>();
   List<num> errors = new List<num>();
 
+
   Neuron neuron;
   Layer(num neuronCount, this.neuron) {
     for(num i = 0; i < neuronCount; i++){
