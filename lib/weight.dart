@@ -4,8 +4,8 @@ class Weight {
   List<List<num>> weights = new List<List<num>>();
   num width, height;
   Neuron neuron;
-
-  Weight(this.width, this.height, this.neuron, num i) {
+  Backy backy;
+  Weight(this.width, this.height, this.neuron, num i, this.backy) {
     for(num i = 0; i < height; i++) {
       var tmp = new List<num>();
       for(num j = 0; j < width; j++) {
@@ -15,12 +15,15 @@ class Weight {
     }
   }
 
-  adjustWeights(List<num> errors,  List<num> outputs, List<num> outputsNext){
+  adjustWeights(List<num> errors,  List<num> outputs, List<num> outputsPrevious){
     for(num h = 0; h < height; h++) {
       for(num w = 0; w < width; w++) {
 
-        num p = neuron.derivative(outputs[h]);
-        num result = neuron.learningRate * errors[h] * p * outputsNext[w];
+        num p = 1;
+        if(backy.useP)
+          p = neuron.derivative(outputs[h]);
+
+        num result = neuron.learningRate * errors[h] * p * outputsPrevious[w];
 
         weights[h][w] = weights[h][w] + result;
       }

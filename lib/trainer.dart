@@ -4,8 +4,10 @@ class Trainer{
   var trainingSets = new List<List<List<num>>>();
   Backy backy;
   num precision = 0; // maybe unsolvable
+  num maximumReapeatingCycle = 200;
+  bool printResults = false;
 
-  Trainer(this.backy){
+  Trainer(this.backy, [this.printResults = false]){
     assert(aboutTheSame(2, 1.9, .1));
     assert(aboutTheSame(2, 2.1, .1));
 
@@ -30,12 +32,17 @@ class Trainer{
     trainingSets.add([tmp, tmp2]);
   }
 
-  trainOnlineSets(num maximumReapeatingCycle, num precision) {
-    trainNewOnlineSets(maximumReapeatingCycle, precision, this.trainingSets);
+  num trainOnlineSets(int maximumReapeatingCycle, num precision) {
+    return trainNewOnlineSets(maximumReapeatingCycle, precision, this.trainingSets);
   }
 
-  trainNewOnlineSets(num maximumReapeatingCycle, num precision, List<List<List<num>>> trainingSets) {
+  num trainNewOnlineSets(int maximumReapeatingCycle, num precision, List<List<List<num>>> trainingSets) {
+    assert(precision < 1);
+    assert(maximumReapeatingCycle > 1);
+
     this.precision = precision;
+    this.trainingSets = trainingSets;
+    this.maximumReapeatingCycle = maximumReapeatingCycle;
 
     bool SuccessfullyTrained = true;
     for(num i = 0; i < maximumReapeatingCycle; i++){
@@ -50,13 +57,17 @@ class Trainer{
             SuccessfullyTrained = false;
       }
       if(SuccessfullyTrained) {
-        print("Successfully Trained! Accuracity: $precision, Trainingsteps: $i\n" + this.toString());
-        break;
+        if(printResults)
+          print("Successfully Trained! Accuracity: $precision, Trainingsteps: $i\n");
+        return i;
       }
     }
 
-    if(!SuccessfullyTrained)
-      print("Unsuccessfull Training! Accuracity: $precision, Trainingsteps: $maximumReapeatingCycle\n" + this.toString());
+    if(!SuccessfullyTrained && printResults){
+      //print("Unsuccessfull Training! Accuracity: $precision, Trainingsteps: $maximumReapeatingCycle\n" + this.toString());
+      print("Unsuccessfull Training! Accuracity: $precision, Trainingsteps: $maximumReapeatingCycle\n");
+    }
+    return -1;
   }
 
   bool aboutTheSame(num a, num b, num precision){
@@ -65,5 +76,7 @@ class Trainer{
     return false;
   }
 
-  String toString() => ".trainNewOnlineSets(1000, .1, " + trainingSets.toString() + ");";
+  String toString(){
+    return "trainer.trainNewOnlineSets($maximumReapeatingCycle, $precision, [" + trainingSets.join(",\n").toString() + "]);";
+  }
 }

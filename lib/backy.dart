@@ -9,6 +9,7 @@ part 'neuron.dart';
 part 'trainer.dart';
 
 class Backy {
+  bool useP = false;
   List<Layer> layers  = new List<Layer>();
   List<Weight> weights  = new List<Weight>();
 
@@ -17,7 +18,7 @@ class Backy {
 
   List<num> netDimensions;
 
-  Backy(this.netDimensions, this.neuron) {
+  Backy(this.netDimensions, this.neuron, [this.useP]) {
     inputLength = netDimensions[0];
     outputLength = netDimensions[netDimensions.length - 1];
     createLayers();
@@ -78,7 +79,7 @@ class Backy {
 
   createWeights() {
     for(num i = 0; i < netDimensions.length - 1; i++){
-      weights.add(new Weight(netDimensions[i], netDimensions[i + 1], neuron, i));
+      weights.add(new Weight(netDimensions[i], netDimensions[i + 1], neuron, i, this));
     }
   }
 }
