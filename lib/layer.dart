@@ -15,7 +15,7 @@ class Layer {
     }
   }
 
-  num finalStep(num index, num error) => neuron.derivative(outputs[index]) * error;
+  num finalStep(num index, num error) => neuron.derivative(outputs[index]) * (error);
 
   calcLastErrors(List<num> expected){
     for(num i = 0; i < errors.length; i++) {

@@ -16,9 +16,9 @@ class TanHNeuron implements Neuron {
 }
 
 class SigmoidNeuron implements Neuron {
-  // doesn't work yet bugfix required
-  num learningRate = 0.2;
-  num bias = 5;
+  // works requires a lot of trainings
+  num learningRate = 5.1;
+  num bias = -5.8;
 
   SigmoidNeuron() {print(this); }
 

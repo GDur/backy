@@ -5,6 +5,7 @@ class Weight {
   num width, height;
   Neuron neuron;
   Backy backy;
+
   Weight(this.width, this.height, this.neuron, num i, this.backy) {
     for(num i = 0; i < height; i++) {
       var tmp = new List<num>();

@@ -1,6 +1,7 @@
 library backy;
 
 import 'dart:math' as Math;
+//import 'package:serialization/serialization.dart';
 
 part 'layer.dart';
 part 'weight.dart';
@@ -9,7 +10,7 @@ part 'neuron.dart';
 part 'trainer.dart';
 
 class Backy {
-  bool useP = false;
+  bool useP;
   List<Layer> layers  = new List<Layer>();
   List<Weight> weights  = new List<Weight>();
 
@@ -18,11 +19,20 @@ class Backy {
 
   List<num> netDimensions;
 
-  Backy(this.netDimensions, this.neuron, [this.useP]) {
+  Backy(this.netDimensions, this.neuron, [this.useP = false]) {
     inputLength = netDimensions[0];
     outputLength = netDimensions[netDimensions.length - 1];
     createLayers();
     createWeights();
+  }
+
+
+  setWeights(List weights) {
+    this.weights = weights;
+  }
+
+  getWeights(){
+    return this.weights.toList(growable: false);
   }
 
   trainOnline(List<num> input, List<num> expected) {
