@@ -1,5 +1,5 @@
 name: backy
-version: 0.1.0
+version: 0.2.0
 author: GDur <gdur.mugen@gmail.com>
 description: "Backy is a neural network which is using the backpropagation algorithm.\r\
   \nIt can be instanciated with any number of layer dimensions. For example: [2, 3,\
